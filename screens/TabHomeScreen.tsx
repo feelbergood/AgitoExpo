@@ -1,7 +1,7 @@
 import { Auth } from 'aws-amplify';
 import { StackScreenProps } from '@react-navigation/stack';
 import * as React from 'react';
-import { Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { TabHomeParamList } from '../types';
