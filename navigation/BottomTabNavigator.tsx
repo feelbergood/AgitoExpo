@@ -63,15 +63,13 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="recipes" color={color} />,
         }}
       />
-      {showTab ? (
-        <BottomTab.Screen
-          name="Profile"
-          component={TabProfileNavigator}
-          options={{
-            tabBarIcon: ({ color }) => <TabBarIcon name="profile" color={color} />,
-          }}
-        />
-      ) : null}
+      <BottomTab.Screen
+        name="Profile"
+        component={TabProfileNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="profile" color={color} />,
+        }}
+      />
     </BottomTab.Navigator>
   );
 }
