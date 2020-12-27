@@ -6,24 +6,24 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          TabHome: {
             screens: {
-              TabOneScreen: 'one',
+              TabHomeScreen: 'home',
             },
           },
-          TabTwo: {
+          TabMenu: {
             screens: {
-              TabTwoScreen: 'two',
+              TabMenuScreen: 'menu',
             },
           },
-          TabThree: {
+          TabRecipes: {
             screens: {
-              TabThreeScreen: 'three',
+              TabRecipesScreen: 'recipes',
             },
           },
-          TabFour: {
+          TabProfile: {
             screens: {
-              TabFourScreen: 'four',
+              TabProfileScreen: 'profile',
             },
           },
         },

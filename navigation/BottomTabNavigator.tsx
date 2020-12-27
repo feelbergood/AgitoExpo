@@ -5,54 +5,78 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import TabThreeScreen from '../screens/TabThreeScreen';
-import TabFourScreen from '../screens/TabFourScreen';
+import TabHomeScreen from '../screens/TabHomeScreen';
+import TabMenuScreen from '../screens/TabMenuScreen';
+import TabRecipesScreen from '../screens/TabRecipesScreen';
+import TabProfileScreen from '../screens/TabProfileScreen';
 
-import { BottomTabParamList, TabOneParamList, TabTwoParamList,
-        TabThreeParamList, TabFourParamList } from '../types';
+import { BottomTabParamList, TabHomeParamList, TabMenuParamList,
+        TabRecipesParamList, TabProfileParamList } from '../types';
+
+import { Hub } from 'aws-amplify';
+import { withAuthenticator } from 'aws-amplify-react-native';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
-export default function BottomTabNavigator() {
+function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+
+  const [showTab, setShowTab] = React.useState(true);
+
+  Hub.listen('auth', (data) => {
+    const event = data.payload.event;
+    console.log('event:', event);
+    if (event === "signIn") {
+      console.log('user signed in...');
+      setShowTab(true);
+    } else if (event === "signUp") {
+      console.log('user signed up...');
+      setShowTab(true);
+    } else if (event === "signOut") {
+      console.log('user signed out...');
+      setShowTab(false);
+    }
+  });
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="TabHome"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
-        name="Learn More"
-        component={TabOneNavigator}
+        name="Home"
+        component={TabHomeNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="more" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="On the Menu"
-        component={TabTwoNavigator}
+        name="Menu"
+        component={TabMenuNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="menu" color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Recipes"
-        component={TabThreeNavigator}
+        component={TabRecipesNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="recipes" color={color} />,
         }}
       />
-      <BottomTab.Screen
-        name="Profile"
-        component={TabFourNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="profile" color={color} />,
-        }}
-      />
+      {showTab ? (
+        <BottomTab.Screen
+          name="Profile"
+          component={TabProfileNavigator}
+          options={{
+            tabBarIcon: ({ color }) => <TabBarIcon name="profile" color={color} />,
+          }}
+        />
+      ) : null}
     </BottomTab.Navigator>
   );
 }
+
+export default withAuthenticator(BottomTabNavigator);
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
@@ -73,58 +97,58 @@ function TabBarIcon(props: { name: string; color: string }) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const TabHomeStack = createStackNavigator<TabHomeParamList>();
 
-function TabOneNavigator() {
+function TabHomeNavigator() {
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
+    <TabHomeStack.Navigator>
+      <TabHomeStack.Screen
+        name="TabHomeScreen"
+        component={TabHomeScreen}
         options={{ headerTitle: 'TITLE' }}
       />
-    </TabOneStack.Navigator>
+    </TabHomeStack.Navigator>
   );
 }
 
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
+const TabMenuStack = createStackNavigator<TabMenuParamList>();
 
-function TabTwoNavigator() {
+function TabMenuNavigator() {
   return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
+    <TabMenuStack.Navigator>
+      <TabMenuStack.Screen
+        name="TabMenuScreen"
+        component={TabMenuScreen}
         options={{ headerTitle: 'TITLE' }}
       />
-    </TabTwoStack.Navigator>
+    </TabMenuStack.Navigator>
   );
 }
 
-const TabThreeStack = createStackNavigator<TabThreeParamList>();
+const TabRecipesStack = createStackNavigator<TabRecipesParamList>();
 
-function TabThreeNavigator() {
+function TabRecipesNavigator() {
   return (
-    <TabThreeStack.Navigator>
-      <TabThreeStack.Screen
-        name="TabThreeScreen"
-        component={TabThreeScreen}
+    <TabRecipesStack.Navigator>
+      <TabRecipesStack.Screen
+        name="TabRecipesScreen"
+        component={TabRecipesScreen}
         options={{ headerTitle: 'TITLE' }}
       />
-    </TabThreeStack.Navigator>
+    </TabRecipesStack.Navigator>
   );
 }
 
-const TabFourStack = createStackNavigator<TabFourParamList>();
+const TabProfileStack = createStackNavigator<TabProfileParamList>();
 
-function TabFourNavigator() {
+function TabProfileNavigator() {
   return (
-    <TabFourStack.Navigator>
-      <TabFourStack.Screen
-        name="TabFourScreen"
-        component={TabFourScreen}
+    <TabProfileStack.Navigator>
+      <TabProfileStack.Screen
+        name="TabProfileScreen"
+        component={TabProfileScreen}
         options={{ headerTitle: 'TITLE' }}
       />
-    </TabFourStack.Navigator>
+    </TabProfileStack.Navigator>
   );
 }
